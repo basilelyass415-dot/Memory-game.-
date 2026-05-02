@@ -1,0 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #6563FF;
+  /* منع التمرير الزائد في الهواتف */
+  overflow: hidden; 
+  padding: 10px;
+}
+
+.container {
+  /* جعل العرض مرن ليناسب شاشة الهاتف */
+  width: 100%;
+  max-width: 400px; 
+  background: #f8f8f8;
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.cards {
+  width: 100%;
+  /* استخدام عرض الحاوية لتحديد الارتفاع ليكون مربعاً */
+  aspect-ratio: 3 / 5;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: space-between;
+}
+
+.card {
+  cursor: pointer;
+  position: relative;
+  perspective: 1000px;
+  /* تقسيم الشاشة لـ 3 أعمدة ليناسب عرض الهاتف */
+  width: calc(100% / 3 - 8px);
+  height: calc(100% / 6 - 8px);
+}
+
+.card .view {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #fff;
+  pointer-events: none;
+  backface-visibility: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- منطق الدوران المتوافق مع ملف HTML الخاص بك --- */
+
+/* الوجه الظاهر (علامة الاستفهام) */
+.view.back-card {
+  transform: rotateY(0deg);
+  z-index: 2;
+}
+
+.view.back-card i {
+  color: #6563FF;
+  /* تصغير الأيقونة قليلاً لتناسب شاشات الموبايل */
+  font-size: 30px; 
+}
+
+/* الوجه المخفي (الأيقونات) */
+.view.front-card {
+  transform: rotateY(-180deg);
+}
+
+.view.front-card i {
+  font-size: 32px;
+}
+
+/* عند الانقلاب */
+.card.flip .view.back-card {
+  transform: rotateY(180deg);
+}
+
+.card.flip .view.front-card {
+  transform: rotateY(0deg);
+}
+
+/* ------------------------------------------ */
+
+/* ألوان الأيقونات */
+.fa-tiktok { color: #000; }
+.fa-youtube { color: #FF0000; }
+.fa-facebook { color: #1877F2; }
+.fa-instagram { color: #E4405F; }
+.fa-discord { color: #5865F2; }
+.fa-whatsapp { color: #25D366; }
+.fa-snapchat { color: #FFFC00; text-shadow: 0 0 2px rgba(0, 0, 0, 0.4);  }
+.fa-google-play { color: #41B1E1; }
+
+/* قسم التفاصيل detales */
+.detales {
+  width: 100%;
+  margin-top: 15px;
+  padding: 10px 5px 0;
+  border-top: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.detales p {
+  font-size: 16px;
+  color: #444;
+}
+
+.detales button {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #6563FF;
+  border-radius: 8px;
+  padding: 6px 15px;
+  background: #fff;
+  border: 2px solid #6563FF;
+  transition: 0.2s;
+}
+
+.detales button:active {
+  transform: scale(0.95);
+  background: #6563FF;
+  color: #fff;
+}
+
+/* حركة الاهتزاز */
+.card.shake {
+  animation: shake 0.35s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+/* ===============================
+   تنسيقات النافذة المنبثقة (Modal)
+   =============================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* خلفية داكنة شفافة */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  
+  /* الإخفاء الافتراضي مع حركة ناعمة */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-box {
+  background: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  width: 90%;
+  max-width: 320px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  
+  /* حركة تكبير النافذة عند الظهور */
+  transform: scale(0.8);
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay.show .modal-box {
+  transform: scale(1);
+}
+
+.modal-box h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.modal-box p {
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.modal-box button {
+  background: #6563FF;
+  color: #fff;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.modal-box button:active {
+  transform: scale(0.95);
+}
